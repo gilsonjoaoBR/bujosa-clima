@@ -7,7 +7,7 @@ export type CtaVariant = 'primary' | 'secondary' | 'ghost' | 'inverse';
 export type CtaSize = 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-55';
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-55';
 
 const variantClasses: Record<CtaVariant, string> = {
   primary:

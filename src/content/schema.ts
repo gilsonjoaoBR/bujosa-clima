@@ -1,3 +1,5 @@
+import { publishReviewStructuredData, testimonialSummary, testimonials } from './testimonials';
+
 type LocalBusinessSchemaInput = {
   siteUrl: string;
   telephone?: string | null;
@@ -66,6 +68,28 @@ export function buildLocalBusinessSchema({
       telephone: `+${telephone}`,
       availableLanguage: 'Portuguese',
     };
+  }
+
+  if (publishReviewStructuredData && testimonials.length > 0) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: testimonialSummary.ratingValue,
+      bestRating: testimonialSummary.bestRating,
+      worstRating: 1,
+      reviewCount: testimonialSummary.total,
+    };
+
+    schema.review = testimonials.map((testimonial) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: testimonial.name },
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: testimonial.rating,
+        bestRating: testimonialSummary.bestRating,
+        worstRating: 1,
+      },
+      reviewBody: testimonial.text,
+    }));
   }
 
   return schema;

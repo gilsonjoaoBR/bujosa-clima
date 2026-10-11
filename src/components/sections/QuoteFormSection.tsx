@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CircleAlert, CircleCheck, MessageCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { CircleAlert, CircleCheck, Info, MessageCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -15,13 +15,49 @@ import { buildQuoteMessage, buildWhatsAppLink } from '@/lib/whatsapp';
 import { isWhatsAppEnabled, whatsappDigits } from '@/lib/whatsapp-config';
 
 const OTHER_SERVICE = 'Outro serviço / ainda não sei';
+const INSTALLATION_SERVICE = 'Instalação de Split';
+
+const CAPACITY_OPTIONS = [
+  '9.000 BTUs',
+  '12.000 BTUs',
+  '18.000 BTUs',
+  '24.000 BTUs',
+  '30.000 BTUs ou mais',
+  'Não sei',
+];
+
+const TECHNOLOGY_OPTIONS = ['Inverter', 'Convencional', 'Não sei'];
+
+const DISTANCE_OPTIONS = ['Até 3 m', 'Entre 3 e 5 m', 'Entre 5 e 10 m', 'Mais de 10 m', 'Não sei'];
+
+const PROPERTY_OPTIONS = ['Residencial', 'Comercial', 'Outro'];
+
+const YES_NO_OPTIONS = ['Sim', 'Não', 'Não sei'];
+
+const TECHNICAL_FIELDS = [
+  'brand',
+  'capacity',
+  'technology',
+  'unitDistance',
+  'propertyType',
+  'electricalPoint',
+  'accessConditions',
+] as const;
 
 const quoteSchema = z.object({
   name: z.string().min(2, 'Informe seu nome.'),
   whatsapp: z.string().min(10, 'Informe um número com DDD, como (21) 99999-9999.'),
   city: z.string().min(2, 'Informe a cidade onde o serviço será feito.'),
+  neighborhood: z.string().optional(),
   service: z.string().min(1, 'Selecione o serviço desejado.'),
   equipment: z.string().optional(),
+  brand: z.string().optional(),
+  capacity: z.string().optional(),
+  technology: z.string().optional(),
+  unitDistance: z.string().optional(),
+  propertyType: z.string().optional(),
+  electricalPoint: z.string().optional(),
+  accessConditions: z.string().optional(),
   description: z.string().min(10, 'Descreva a necessidade com um pouco mais de detalhe.'),
 });
 
@@ -33,12 +69,15 @@ const inputClasses =
 
 const labelClasses = 'text-sm font-medium text-navy';
 const errorClasses = 'mt-1.5 flex items-center gap-1.5 text-xs text-red-700';
+const hintClasses = 'mt-1.5 text-xs text-navy/55';
 
 export function QuoteFormSection() {
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteSchema),
@@ -46,11 +85,32 @@ export function QuoteFormSection() {
       name: '',
       whatsapp: '',
       city: '',
+      neighborhood: '',
       service: '',
       equipment: '',
+      brand: '',
+      capacity: '',
+      technology: '',
+      unitDistance: '',
+      propertyType: '',
+      electricalPoint: '',
+      accessConditions: '',
       description: '',
     },
   });
+
+  const selectedService = useWatch({ control, name: 'service' });
+  const isInstallation = selectedService === INSTALLATION_SERVICE;
+
+  // Ao trocar para um serviço que não é instalação, os dados técnicos deixam de
+  // fazer sentido e não devem seguir na mensagem.
+  useEffect(() => {
+    if (isInstallation) {
+      return;
+    }
+
+    TECHNICAL_FIELDS.forEach((field) => setValue(field, ''));
+  }, [isInstallation, setValue]);
 
   const onSubmit = (values: QuoteFormValues) => {
     const link = buildWhatsAppLink(whatsappDigits, buildQuoteMessage(values));
@@ -153,6 +213,22 @@ export function QuoteFormSection() {
               </div>
 
               <div>
+                <label className={labelClasses} htmlFor="bairro">
+                  Bairro <span className="font-normal text-navy/50">(opcional)</span>
+                </label>
+                <input
+                  id="bairro"
+                  type="text"
+                  autoComplete="address-level3"
+                  className={`mt-2 ${inputClasses}`}
+                  placeholder="Bairro do serviço"
+                  {...register('neighborhood')}
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
                 <label className={labelClasses} htmlFor="servico">
                   Serviço desejado
                 </label>
@@ -181,21 +257,171 @@ export function QuoteFormSection() {
                   </p>
                 ) : null}
               </div>
+
+              <div>
+                <label className={labelClasses} htmlFor="equipamento">
+                  Modelo do equipamento{' '}
+                  <span className="font-normal text-navy/50">(opcional)</span>
+                </label>
+                <input
+                  id="equipamento"
+                  type="text"
+                  className={`mt-2 ${inputClasses}`}
+                  placeholder="Ex.: LG Dual Inverter S4-Q12JA3AA"
+                  {...register('equipment')}
+                />
+              </div>
             </div>
 
-            <div>
-              <label className={labelClasses} htmlFor="equipamento">
-                Modelo ou capacidade do equipamento{' '}
-                <span className="font-normal text-navy/50">(opcional)</span>
-              </label>
-              <input
-                id="equipamento"
-                type="text"
-                className={`mt-2 ${inputClasses}`}
-                placeholder="Ex.: split 12.000 BTUs, inverter"
-                {...register('equipment')}
-              />
-            </div>
+            {isInstallation ? (
+              <fieldset className="rounded-2xl border border-brand/20 bg-ice/70 p-5">
+                <legend className="px-2 text-sm font-semibold text-navy">
+                  Dados da instalação
+                </legend>
+
+                <p className="flex items-start gap-2 text-xs leading-relaxed text-navy/70">
+                  <Info aria-hidden className="mt-0.5 size-3.5 shrink-0 text-brand" />
+                  Tudo aqui é opcional. Se não souber alguma informação, deixe em branco — dá para
+                  confirmar pelo WhatsApp. Fotos do local também podem ser enviadas depois.
+                </p>
+
+                <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label className={labelClasses} htmlFor="marca">
+                      Marca do equipamento{' '}
+                      <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <input
+                      id="marca"
+                      type="text"
+                      className={`mt-2 ${inputClasses}`}
+                      placeholder="Ex.: LG, Samsung, Daikin, Midea"
+                      {...register('brand')}
+                    />
+                  </div>
+
+                  <div>
+                    <label className={labelClasses} htmlFor="capacidade">
+                      Capacidade <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <select
+                      id="capacidade"
+                      className={`mt-2 ${inputClasses}`}
+                      defaultValue=""
+                      {...register('capacity')}
+                    >
+                      <option value="">Não informar</option>
+                      {CAPACITY_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelClasses} htmlFor="tecnologia">
+                      Inverter ou convencional?{' '}
+                      <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <select
+                      id="tecnologia"
+                      className={`mt-2 ${inputClasses}`}
+                      defaultValue=""
+                      {...register('technology')}
+                    >
+                      <option value="">Não informar</option>
+                      {TECHNOLOGY_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelClasses} htmlFor="distancia">
+                      Distância entre evaporadora e condensadora{' '}
+                      <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <select
+                      id="distancia"
+                      className={`mt-2 ${inputClasses}`}
+                      defaultValue=""
+                      aria-describedby="distancia-dica"
+                      {...register('unitDistance')}
+                    >
+                      <option value="">Não informar</option>
+                      {DISTANCE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    <p id="distancia-dica" className={hintClasses}>
+                      Distância aproximada entre a unidade interna e a externa.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className={labelClasses} htmlFor="imovel">
+                      Tipo de imóvel <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <select
+                      id="imovel"
+                      className={`mt-2 ${inputClasses}`}
+                      defaultValue=""
+                      {...register('propertyType')}
+                    >
+                      <option value="">Não informar</option>
+                      {PROPERTY_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelClasses} htmlFor="ponto-eletrico">
+                      Já existe ponto elétrico adequado?{' '}
+                      <span className="font-normal text-navy/50">(opcional)</span>
+                    </label>
+                    <select
+                      id="ponto-eletrico"
+                      className={`mt-2 ${inputClasses}`}
+                      defaultValue=""
+                      aria-describedby="ponto-eletrico-dica"
+                      {...register('electricalPoint')}
+                    >
+                      <option value="">Não informar</option>
+                      {YES_NO_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    <p id="ponto-eletrico-dica" className={hintClasses}>
+                      Adequações elétricas não estão presumidas no orçamento.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <label className={labelClasses} htmlFor="acesso">
+                    Acesso e condições de instalação{' '}
+                    <span className="font-normal text-navy/50">(opcional)</span>
+                  </label>
+                  <textarea
+                    id="acesso"
+                    rows={3}
+                    className={`mt-2 ${inputClasses}`}
+                    placeholder="Andar, escada, laje, distância até o ponto de instalação, fachada, condomínio..."
+                    {...register('accessConditions')}
+                  />
+                </div>
+              </fieldset>
+            ) : null}
 
             <div>
               <label className={labelClasses} htmlFor="necessidade">
@@ -247,8 +473,8 @@ export function QuoteFormSection() {
                 Enviar pelo WhatsApp
               </Cta>
               <p className="text-xs leading-relaxed text-navy/60 sm:max-w-xs">
-                Ao enviar, o WhatsApp abre em uma nova aba com a mensagem já escrita. Você revisa e
-                confirma o envio.
+                O orçamento considera os materiais conforme as informações enviadas e o escopo
+                aprovado. A mensagem abre no WhatsApp para você revisar antes de enviar.
               </p>
             </div>
 
@@ -295,6 +521,10 @@ export function QuoteFormSection() {
               <li className="flex items-start gap-2">
                 <CircleCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-teal" />
                 Quando necessário, combinamos uma avaliação do local antes de confirmar o valor.
+              </li>
+              <li className="flex items-start gap-2">
+                <CircleCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-teal" />
+                Você pode enviar fotos do local pelo WhatsApp para facilitar a avaliação.
               </li>
               <li className="flex items-start gap-2">
                 <CircleCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-teal" />

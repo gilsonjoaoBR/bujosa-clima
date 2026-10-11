@@ -6,6 +6,8 @@ export type Service = {
   summary: string;
   bullets: readonly string[];
   icon: LucideIcon;
+  /** Trecho usado na mensagem de WhatsApp específica do serviço. */
+  whatsappSubject: string;
 };
 
 export const services: readonly Service[] = [
@@ -19,6 +21,7 @@ export const services: readonly Service[] = [
       'Avaliação das condições técnicas antes da confirmação do orçamento.',
     ],
     icon: AirVent,
+    whatsappSubject: 'instalação de ar-condicionado split',
   },
   {
     id: 'manutencao',
@@ -29,6 +32,7 @@ export const services: readonly Service[] = [
       'Serviços condicionados à avaliação técnica e à capacidade operacional.',
     ],
     icon: Wrench,
+    whatsappSubject: 'manutenção preventiva ou corretiva de ar-condicionado',
   },
   {
     id: 'higienizacao',
@@ -40,5 +44,6 @@ export const services: readonly Service[] = [
       'Orientações sobre conservação e periodicidade da manutenção.',
     ],
     icon: Sparkles,
+    whatsappSubject: 'higienização de ar-condicionado',
   },
 ];

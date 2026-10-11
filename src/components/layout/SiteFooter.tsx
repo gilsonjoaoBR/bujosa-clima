@@ -2,6 +2,7 @@ import { MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { BrandLogo } from '@/components/ui/BrandLogo';
+import { AcritechCredit } from '@/components/ui/AcritechCredit';
 import { Container } from '@/components/ui/Container';
 import { services } from '@/content/services';
 import { site } from '@/content/site';
@@ -83,6 +84,10 @@ export function SiteFooter() {
           <Link className="transition hover:text-white" to="/privacidade">
             Política de privacidade
           </Link>
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <AcritechCredit />
         </div>
       </Container>
     </footer>

@@ -17,7 +17,8 @@ rastreadores e sem serviços pagos.
 | Rotas | react-router-dom (`/` e `/privacidade`) |
 | Formulário | react-hook-form + zod |
 | Fonte | Montserrat Variable auto-hospedada (`@fontsource-variable/montserrat`) |
-| Testes | Vitest (funções puras de WhatsApp e dados estruturados) |
+| Carrossel de avaliações | componente próprio, sem biblioteca |
+| Testes | Vitest (WhatsApp, depoimentos e dados estruturados) |
 | Publicação | Docker multi-stage (Node → Nginx) |
 
 ## Estrutura
@@ -36,12 +37,22 @@ public/
   images/       fotos do site (ver LEIA-ME.md da pasta)
 docs/
   decisoes.md   registro das decisões técnicas
+  credito-acritech.md  proposta do crédito institucional da Acritech
   identidade/   arquivo aprovado, derivados e validação visual
   validacao/    capturas de tela das verificações responsivas
 scripts/
   extract-identity-assets.py   gera os derivados da identidade visual
+  prepare-acritech-credit.py   deriva a peça do crédito da Acritech
   vite-plugin-seo.ts           canonical, Open Graph, JSON-LD, sitemap e robots
 ```
+
+## Seções da página
+
+Cabeçalho com menu responsivo, hero, serviços, diferenciais, **avaliações de
+clientes** (carrossel contínuo), como funciona, área de atendimento,
+**perguntas frequentes** (comerciais e técnicas), formulário de orçamento, CTA
+final e rodapé com **crédito institucional da Acritech**. A política de
+privacidade tem página própria em `/privacidade`.
 
 ## Requisitos
 
@@ -165,23 +176,35 @@ sensível no histórico: a identidade visual aprovada está versionada em
 | --- | --- |
 | `npm run typecheck` | sem erros |
 | `npm run lint` | sem avisos |
-| `npm test` | 15 testes em 2 arquivos — todos passando |
-| `npm run build` | build gerado (JS ~132 kB gzip, CSS ~7 kB gzip) |
+| `npm test` | 27 testes em 3 arquivos — todos passando |
+| `npm run build` | build gerado (JS ~139 kB gzip, CSS ~8 kB gzip) |
 | `docker build` + execução local | imagem ~96 MB, container `healthy` |
 | `GET /healthz` | `200 ok` |
 | Rotas `/`, `/privacidade` e rota inexistente (SPA) | `200` com `index.html` |
 | Cabeçalhos de segurança e de cache | presentes (CSP, `nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`) |
 | Gzip no proxy | ativo para HTML, CSS e JS |
-| Navegador real, desktop 1440 px e celular 390 px | layout conferido, menu mobile e CTA fixo funcionando, sem erros da aplicação no console sob a CSP |
+| Chrome em 390, 768 e 1440 px | sem rolagem horizontal em nenhuma largura |
+| Links de WhatsApp | 9 CTAs, todos em `wa.me/5521984173233`, com a marca identificada na mensagem |
+| Carrossel de avaliações | movimento da esquerda para a direita a ~26 px/s, pausa com mouse e com foco, botões anterior/próximo funcionando, `prefers-reduced-motion` desliga o movimento automático mantendo a navegação |
+| Formulário | bloco técnico aparece só para instalação e é limpo ao trocar de serviço |
+| Console do navegador sob a CSP | sem erros da aplicação |
 
 Capturas em `docs/validacao/`.
 
 ## Dados ainda pendentes do cliente
 
-1. Número do WhatsApp Business (`VITE_WHATSAPP_NUMBER`).
-2. Aprovação da extração da identidade visual (`docs/identidade/DERIVADOS.md`).
-3. Fotos próprias dos serviços (ver `public/images/LEIA-ME.md`).
-4. Confirmação do domínio final para `VITE_SITE_URL`.
+1. Aprovação da extração da identidade visual (`docs/identidade/DERIVADOS.md`).
+2. Aprovação do crédito institucional da Acritech (`docs/credito-acritech.md`) —
+   não existe componente de crédito nos projetos locais para reutilizar.
+3. Confirmação de que os 20 depoimentos são de clientes reais e podem ser
+   publicados. Eles foram transcritos exatamente como enviados; nenhum foi
+   criado pelo Codex.
+4. Decisão sobre manter `AggregateRating` e `Review` nos dados estruturados:
+   avaliações publicadas pelo próprio negócio são "auto-avaliação" para o
+   Google, que não as considera elegíveis para resultado enriquecido. Basta
+   mudar `publishReviewStructuredData` em `src/content/testimonials.ts`.
+5. Fotos próprias dos serviços (ver `public/images/LEIA-ME.md`).
+6. Confirmação do domínio final para `VITE_SITE_URL`.
 
 O site não publica CNPJ, endereço comercial, e-mail, horário de funcionamento,
 preços, prazos, certificações, depoimentos ou números de clientes — nada disso

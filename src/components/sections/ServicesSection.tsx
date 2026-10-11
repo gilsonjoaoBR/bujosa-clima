@@ -44,7 +44,7 @@ export function ServicesSection() {
 
               <div className="mt-7 pt-1">
                 <WhatsAppCta
-                  message={buildServiceQuoteMessage(service.title)}
+                  message={buildServiceQuoteMessage(service.whatsappSubject)}
                   variant="secondary"
                   className="w-full"
                 >

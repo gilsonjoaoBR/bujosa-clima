@@ -13,7 +13,9 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_WHATSAPP_NUMBER=""
+# Número oficial compartilhado (Bujosa Clima / Acritech). Sobrescreva pelo
+# Coolify apenas se o contato mudar.
+ARG VITE_WHATSAPP_NUMBER="5521984173233"
 ARG VITE_SITE_URL="https://bujosaclima.com.br"
 ENV VITE_WHATSAPP_NUMBER=${VITE_WHATSAPP_NUMBER} \
     VITE_SITE_URL=${VITE_SITE_URL}

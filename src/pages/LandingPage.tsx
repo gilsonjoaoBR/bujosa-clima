@@ -9,6 +9,7 @@ import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
 import { QuoteFormSection } from '@/components/sections/QuoteFormSection';
 import { ServiceAreaSection } from '@/components/sections/ServiceAreaSection';
 import { ServicesSection } from '@/components/sections/ServicesSection';
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { PendingConfigNotice } from '@/components/ui/PendingConfigNotice';
 import { site } from '@/content/site';
 import { useDocumentMeta } from '@/lib/seo';
@@ -31,6 +32,7 @@ export function LandingPage() {
         <HeroSection />
         <ServicesSection />
         <DifferentialsSection />
+        <TestimonialsSection />
         <HowItWorksSection />
         <ServiceAreaSection />
         <FaqSection />
