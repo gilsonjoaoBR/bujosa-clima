@@ -67,3 +67,73 @@
     }
   }
 }
+
+@layer components {
+  /*
+   * Crédito institucional da Acritech — mesmo padrão usado nos projetos da
+   * Acritech. O PNG transparente (500×500) tem a assinatura numa faixa
+   * central; a janela fixa abaixo recorta apenas essa faixa, sem alterar o
+   * arquivo original. Única adaptação em relação à referência: o alinhamento
+   * vertical fica com o contêiner (`items-center`), sem `self-*`.
+   */
+  .acritech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    flex: none;
+    white-space: nowrap;
+    padding-inline: 0.25rem;
+    margin: -8px -4px;
+    font-size: inherit;
+    line-height: inherit;
+    transition: color 200ms ease;
+  }
+
+  .acritech-badge--dark {
+    color: currentColor;
+  }
+
+  .acritech-badge--light {
+    color: #303030;
+  }
+
+  .acritech-badge--dark:hover,
+  .acritech-badge--dark:focus-visible {
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  .acritech-badge--light:hover,
+  .acritech-badge--light:focus-visible {
+    color: #0f172a;
+  }
+
+  .acritech-badge__logo {
+    display: block;
+    flex: none;
+    overflow: hidden;
+    width: 66px;
+    height: 30px;
+  }
+
+  .acritech-badge__logo img {
+    display: block;
+    width: 70.5px;
+    max-width: none;
+    height: 70.5px;
+    transform: translate(-2.25px, -18.75px);
+  }
+
+  .acritech-badge--compact .acritech-badge__logo,
+  .acritech-badge--standard .acritech-badge__logo {
+    width: 58px;
+    height: 26px;
+  }
+
+  .acritech-badge--compact .acritech-badge__logo img,
+  .acritech-badge--standard .acritech-badge__logo img {
+    width: 62px;
+    height: 62px;
+    transform: translate(-2px, -16.5px);
+  }
+}

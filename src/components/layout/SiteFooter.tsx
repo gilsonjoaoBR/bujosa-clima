@@ -77,17 +77,21 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-ice/60 sm:flex-row sm:items-center sm:justify-between">
-          <p>
+        <div className="mt-12 grid gap-4 border-t border-white/10 pt-6 text-xs text-ice/60 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-6">
+          <p className="text-center sm:text-left">
             © {year} {site.name}. Todos os direitos reservados.
           </p>
-          <Link className="transition hover:text-white" to="/privacidade">
+
+          <div className="flex items-center justify-center">
+            <AcritechCredit theme="dark" mode="standard" />
+          </div>
+
+          <Link
+            className="text-center transition hover:text-white sm:justify-self-end"
+            to="/privacidade"
+          >
             Política de privacidade
           </Link>
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <AcritechCredit />
         </div>
       </Container>
     </footer>

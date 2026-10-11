@@ -18,6 +18,7 @@ rastreadores e sem serviços pagos.
 | Formulário | react-hook-form + zod |
 | Fonte | Montserrat Variable auto-hospedada (`@fontsource-variable/montserrat`) |
 | Carrossel de avaliações | componente próprio, sem biblioteca |
+| Crédito institucional | padrão já usado nos projetos da Acritech (`docs/credito-acritech.md`) |
 | Testes | Vitest (WhatsApp, depoimentos e dados estruturados) |
 | Publicação | Docker multi-stage (Node → Nginx) |
 
@@ -42,7 +43,6 @@ docs/
   validacao/    capturas de tela das verificações responsivas
 scripts/
   extract-identity-assets.py   gera os derivados da identidade visual
-  prepare-acritech-credit.py   deriva a peça do crédito da Acritech
   vite-plugin-seo.ts           canonical, Open Graph, JSON-LD, sitemap e robots
 ```
 
@@ -194,8 +194,9 @@ Capturas em `docs/validacao/`.
 ## Dados ainda pendentes do cliente
 
 1. Aprovação da extração da identidade visual (`docs/identidade/DERIVADOS.md`).
-2. Aprovação do crédito institucional da Acritech (`docs/credito-acritech.md`) —
-   não existe componente de crédito nos projetos locais para reutilizar.
+2. Confirmação visual do crédito da Acritech na mesma linha do copyright e do
+   link de privacidade (implementado no padrão dos projetos da Acritech, ver
+   `docs/credito-acritech.md`).
 3. Confirmação de que os 20 depoimentos são de clientes reais e podem ser
    publicados. Eles foram transcritos exatamente como enviados; nenhum foi
    criado pelo Codex.

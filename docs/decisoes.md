@@ -142,13 +142,17 @@ componentes.
 
 ## 13. Crédito institucional da Acritech
 
-Inspeção somente leitura dos três projetos locais da Acritech não encontrou
-nenhum componente de crédito "Desenvolvido por" para reutilizar. Como o pedido
-era apresentar uma proposta antes de criar uma assinatura diferente, o rodapé
-traz uma proposta discreta que usa o logotipo oficial (arquivo apenas
-redimensionado, sem redesenho nem alteração de cores) e o texto "Desenvolvido
-por Acritech" com link para `https://acritech.com.br/`. Alternativas e a
-situação da aprovação estão em `docs/credito-acritech.md`.
+O padrão de crédito já usado pela Acritech foi localizado em
+`C:\dev\beatriz-centro-cirurgico` (`AcritechCredit.jsx` + classes
+`.acritech-badge*`) e replicado aqui: "Desenvolvido por" + logotipo oficial em
+PNG transparente, recortado por CSS. O arquivo do logotipo é copiado sem
+nenhuma alteração e o componente mantém as props do original (`theme`, `mode`,
+`href`, `logoSrc`). Detalhes, hashes e medições em
+`docs/credito-acritech.md`.
+
+Posicionamento: na mesma linha do copyright e do link de política de
+privacidade, centralizado em relação à página (`grid-cols-[1fr_auto_1fr]`),
+como pedido nesta revisão.
 
 ## 14. Carrossel de avaliações escrito à mão
 
