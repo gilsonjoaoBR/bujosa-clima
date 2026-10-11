@@ -82,4 +82,7 @@ e não afeta nenhuma outra aplicação da VPS.
 
 | Data | Commit | Resultado |
 | --- | --- | --- |
-| 2026-10-11 | a publicar | Código no GitHub e DNS pronto; aplicação no Coolify pendente de criação pelo painel |
+| 2026-10-11 | `c87b8da` (público no `main`) | Código publicado no GitHub e registro DNS criado e resolvendo. Aplicação no Coolify ainda **não criada**: o acesso do agente é somente leitura e restrito ao laboratório, então esta etapa depende do painel. |
+
+Depois de criar a aplicação e fazer o deploy, registre aqui o commit implantado,
+o identificador (UUID) da aplicação e o resultado da validação.
