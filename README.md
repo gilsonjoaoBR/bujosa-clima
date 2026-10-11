@@ -197,13 +197,14 @@ Capturas em `docs/validacao/`.
 2. Confirmação visual do crédito da Acritech na mesma linha do copyright e do
    link de privacidade (implementado no padrão dos projetos da Acritech, ver
    `docs/credito-acritech.md`).
-3. Confirmação de que os 20 depoimentos são de clientes reais e podem ser
-   publicados. Eles foram transcritos exatamente como enviados; nenhum foi
-   criado pelo Codex.
-4. Decisão sobre manter `AggregateRating` e `Review` nos dados estruturados:
-   avaliações publicadas pelo próprio negócio são "auto-avaliação" para o
-   Google, que não as considera elegíveis para resultado enriquecido. Basta
-   mudar `publishReviewStructuredData` em `src/content/testimonials.ts`.
+3. ~~Confirmação de que os 20 depoimentos são de clientes reais e podem ser
+   publicados.~~ **Confirmado pelo proprietário em 11/10/2026.** Os textos foram
+   transcritos exatamente como enviados; nenhum foi criado pelo Codex.
+4. ~~Decisão sobre manter `AggregateRating` e `Review` nos dados estruturados.~~
+   **Mantidos como estão**, por decisão do proprietário em 11/10/2026. A
+   observação sobre auto-avaliação segue registrada em
+   `src/content/testimonials.ts` e a chave `publishReviewStructuredData`
+   continua disponível caso mude de ideia.
 5. Fotos próprias dos serviços (ver `public/images/LEIA-ME.md`).
 6. Registro (ou não) do domínio próprio `bujosaclima.com.br`. A publicação usa
    o subdomínio `bujosaclima.acritech.com.br` porque o domínio próprio ainda

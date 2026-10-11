@@ -181,3 +181,23 @@ Capturas: `docs/validacao/producao-desktop-1440.png` e
 O app usa a branch `main` do repositório. Depois de `git push`, basta disparar
 **Deploy** na aplicação (ou configurar o webhook do repositório no Coolify para
 deploy automático). Os argumentos de build já estão salvos na aplicação.
+
+### HTTPS e certificado (verificado em 11/10/2026)
+
+| Item | Resultado |
+| --- | --- |
+| Emissor | Let's Encrypt (`CN=YR1`), cadeia `bujosaclima` → `YR1` → `ISRG Root YR` |
+| CN / SAN | `bujosaclima.acritech.com.br` (exato, sem wildcard) |
+| Validade | 11/10/2026 18:06 UTC → 09/01/2027 18:06 UTC |
+| Nº de série / SHA-256 | `068DE446744EA20F559DAC3110D2AFA12748` / `47:F9:EB:9C:…:25:9D` |
+| TLS / HTTP | TLS 1.3 sobre HTTP/2 |
+| Verificação | `openssl`: `Verify return code: 0 (ok)`; Chrome: `securityDetails` presente com o SAN do domínio |
+| HTTP → HTTPS | `302` para `https://bujosaclima.acritech.com.br/` |
+| DNS | apenas registro `A`; **nenhum** `AAAA` (sem conflito IPv6) |
+| Conteúdo misto | nenhum recurso `http://`; nenhuma falha de carregamento; console limpo |
+| Logs do proxy | nenhum erro ACME para este domínio; certificado presente no `acme.json` |
+
+Observação: em 11/10/2026 os logs do proxy registraram erros de emissão de
+certificado para **outro** serviço (`www.agenda-hml.acritech.com.br`, da
+aplicação de homologação `bpaj12kqhyw1bsjudbojhwio`), por ausência de registro
+DNS. Não faz parte da Bujosa Clima e não foi alterado.
