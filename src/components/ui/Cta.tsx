@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { cx } from '@/lib/cx';
 
@@ -56,6 +57,16 @@ export function Cta({
   );
 
   if (href && !disabled) {
+    if (href.startsWith('/') || href.startsWith('#')) {
+      const to = href.startsWith('#') ? { pathname: '/', hash: href } : href;
+
+      return (
+        <Link to={to} className={classes}>
+          {content}
+        </Link>
+      );
+    }
+
     return (
       <a
         href={href}

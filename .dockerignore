@@ -4,9 +4,12 @@ dist
 .github
 .vite
 coverage
-docs/identidade/_scratch
+# A identidade visual aprovada e os documentos não entram no build: os arquivos
+# usados pelo site já estão derivados em public/brand.
+docs
 .env
 .env.*
 !.env.example
 *.log
 README.md
+.playwright-mcp
