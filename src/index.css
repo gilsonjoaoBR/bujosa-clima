@@ -112,26 +112,26 @@
     display: block;
     flex: none;
     overflow: hidden;
-    width: 66px;
-    height: 30px;
+    /* Tamanho padrão usado no rodapé da Bujosa Clima: a arte (faixa central do
+       PNG 500×500) aparece inteira, com cerca de 2 px de respiro em cada lado. */
+    width: 70px;
+    height: 38px;
   }
 
   .acritech-badge__logo img {
     display: block;
-    width: 70.5px;
+    width: 76px;
     max-width: none;
-    height: 70.5px;
-    transform: translate(-2.25px, -18.75px);
+    height: 76px;
+    transform: translate(-3px, -18.7px);
   }
 
-  .acritech-badge--compact .acritech-badge__logo,
-  .acritech-badge--standard .acritech-badge__logo {
+  .acritech-badge--compact .acritech-badge__logo {
     width: 58px;
     height: 26px;
   }
 
-  .acritech-badge--compact .acritech-badge__logo img,
-  .acritech-badge--standard .acritech-badge__logo img {
+  .acritech-badge--compact .acritech-badge__logo img {
     width: 62px;
     height: 62px;
     transform: translate(-2px, -16.5px);

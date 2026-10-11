@@ -38,10 +38,20 @@ original permanece intacto.
   `.acritech-badge--dark`, `.acritech-badge--light`, `.acritech-badge--standard`,
   `.acritech-badge--compact` e `.acritech-badge__logo`.
 
-Única adaptação em relação à referência: o alinhamento vertical do selo fica
-com o contêiner (`items-center`), sem as classes `self-start sm:self-auto`, que
-existiam para o rodapé daquele projeto. Medidas, recorte e transição de cor são
-idênticos.
+Duas adaptações em relação à referência:
+
+1. o alinhamento vertical do selo fica com o contêiner (`items-center`), sem as
+   classes `self-start sm:self-auto`, que existiam para o rodapé daquele
+   projeto;
+2. o selo do modo `standard` (usado neste rodapé) foi ampliado a pedido: janela
+   de 70 × 38 px sobre a imagem em 76 × 76 px, deslocada em
+   `translate(-3px, -18.7px)`. O recorte foi recalculado para a arte aparecer
+   inteira, com cerca de 2 px de respiro em cada lado — a versão anterior de
+   58 × 26 px cortava aproximadamente 2 px da base da arte. O modo `compact`
+   continua com as medidas originais da referência (58 × 26 px / 62 × 62 px).
+
+A técnica de recorte, a transição de cor e a estrutura do componente seguem
+idênticas ao padrão.
 
 ## Posição no rodapé
 
@@ -62,6 +72,9 @@ centralizada em 720 px, na mesma linha do copyright e do link (o selo é mais
 alto por causa da área de toque de 40 px). A 390 px o crédito fica centralizado
 (195 de 195) e nada fica escondido atrás do botão fixo de WhatsApp.
 
+Capturas: `docs/validacao/desktop-rodape-1440.png` e
+`docs/validacao/mobile-rodape-390.png`.
+
 ## Como trocar
 
 ```tsx
@@ -69,5 +82,5 @@ alto por causa da área de toque de 40 px). A 390 px o crédito fica centralizad
 ```
 
 - `theme="light"` usa o tom escuro, para rodapés claros;
-- `mode="compact"` reduz o selo;
+- `mode="compact"` usa o selo menor (medidas originais da referência);
 - `href` e `logoSrc` podem ser sobrescritos por prop, como no padrão original.
