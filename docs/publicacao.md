@@ -36,12 +36,30 @@ Levantamento das conexões existentes nesta estação:
 | `mcp hostinger-vps` / `hostinger-dns` | API Hostinger | Inventário da VPS e escrita no DNS |
 | SSH para a VPS | chave `acritech-hml` (carregada no agente) autorizada no `srv1001797` | Acesso root ao host; não foi usado |
 
-O token do cofre e o das configurações do VS Code são **o mesmo token**
-(`fingerprint 4c307b551bfb`), com permissão apenas de leitura: a API responde
+As três origens na estação (cofre `coolify.token`, `coolify.apiToken` das
+configurações do VS Code e o segredo guardado pela extensão Coolify no
+SecretStorage) contêm **o mesmo token**, `fingerprint 4c307b551bfb`, com
+permissão apenas de leitura: a API responde
 `403 Missing required permissions: write` para qualquer escrita. Com ele é
 possível ler tudo o que é necessário para montar a aplicação (projeto,
 ambiente, servidor, destino, portas e o padrão das landing pages existentes),
 mas não criar nem alterar recursos.
+
+Consulta somente leitura ao banco do Coolify (`personal_access_tokens`) em
+11/10/2026 18:39 UTC:
+
+| id | nome | permissões | criado em | último uso |
+| --- | --- | --- | --- | --- |
+| 2 | `coolify_vscode` | `["read"]` | 07/10 16:06 | 11/10 18:38 (sondagem) |
+| 3 | `conexao_vscode` | `["deploy","read","read:sensitive","write"]` | 07/10 19:20 | 08/10 02:26 |
+
+Ou seja: **existe** um token com escrita (`conexao_vscode`), mas o valor dele
+não está gravado em nenhum lugar acessível desta estação (o Coolify guarda
+apenas o hash) e o token em uso é o de leitura. Habilitar a escrita continua
+dependendo de um destes caminhos: criar um token novo no painel e guardá-lo no
+cofre, reinformar o valor do `conexao_vscode`, ou conceder as permissões
+`write`/`deploy` ao token em uso (alteração em recurso compartilhado, que exige
+autorização específica).
 
 A limitação é do **token**, não da conta (o token pertence ao Root Team da
 instância), do MCP nem da sessão: a API recusa antes de qualquer validação, e
