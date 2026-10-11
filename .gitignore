@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.vite/
+
+# Variáveis de ambiente locais (o exemplo versionado é o .env.example)
+.env
+.env.local
+.env.*.local
+
+# Recortes temporários usados durante a extração de identidade visual
+docs/identidade/_scratch/
+
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

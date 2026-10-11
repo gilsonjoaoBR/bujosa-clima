@@ -1,0 +1,9 @@
+# Mantém o repositório com terminação de linha LF, independente do sistema de
+# quem clona (importante para o build em container Linux).
+* text=auto eol=lf
+
+*.png binary
+*.ico binary
+*.avif binary
+*.webp binary
+*.woff2 binary

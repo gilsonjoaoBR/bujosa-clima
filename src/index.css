@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans:
+    'Montserrat Variable', Montserrat, ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+
+  /* Paleta oficial aprovada */
+  --color-navy: #102b46;
+  --color-navy-soft: #1b3f63;
+  --color-brand: #087eaf;
+  --color-brand-strong: #066a94;
+  --color-teal: #27a6a0;
+  --color-teal-strong: #1f8b86;
+  --color-ice: #f5fafc;
+  --color-ice-deep: #e6f1f7;
+
+  --shadow-card: 0 20px 45px -30px rgb(16 43 70 / 0.45);
+  --shadow-float: 0 30px 70px -35px rgb(16 43 70 / 0.5);
+
+  --animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ice font-sans text-navy antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-semibold tracking-tight text-balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}

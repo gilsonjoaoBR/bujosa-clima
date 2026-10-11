@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.github
+.vite
+coverage
+docs/identidade/_scratch
+.env
+.env.*
+!.env.example
+*.log
+README.md
