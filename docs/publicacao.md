@@ -20,11 +20,49 @@ Runbook da publicação na VPS da Acritech (Hostinger `srv1001797`, IP
 
 - Código auditado e publicado no GitHub (sem segredos no histórico).
 - Registro DNS criado e resolvendo.
-- **Falta criar a aplicação no Coolify**: o acesso disponível nesta sessão é
-  somente leitura e limitado ao laboratório, então a criação do recurso precisa
-  ser feita pelo painel.
+- **Falta criar a aplicação no Coolify.** A criação não pôde ser feita por API:
+  o token configurado responde `403 Missing required permissions: write`.
+  Detalhes e o ajuste mínimo estão em "Acesso ao Coolify", abaixo.
+
+## Acesso ao Coolify
+
+Levantamento das conexões existentes nesta estação:
+
+| Conexão | Tipo | O que permite |
+| --- | --- | --- |
+| `mcp acritech-lab` (Codex) | MCP local → módulo PowerShell → API Coolify | Leitura e deploy **apenas** dos recursos da allowlist do laboratório `booking-ux-hml` |
+| Extensão `ron-niri.coolify-vscode` (VS Code) | `coolify.apiUrl` + `coolify.apiToken` nas configurações | Leitura (projetos, servidores, aplicações e logs); **escrita recusada** |
+| Cofre DPAPI `%APPDATA%\acritech\credentials\store.json` | credenciais `coolify.url` e `coolify.token` | Usadas pelo módulo local; a allowlist de laboratório é dele |
+| `mcp hostinger-vps` / `hostinger-dns` | API Hostinger | Inventário da VPS e escrita no DNS |
+
+Com o token atual é possível ler tudo o que é necessário para montar a
+aplicação (projeto, ambiente, servidor, destino, portas e padrão das landing
+pages existentes), mas não criar nem alterar recursos.
+
+**Ajuste mínimo para automatizar:** gerar no painel do Coolify (Keys & Tokens →
+API tokens) um token com as permissões **read, write e deploy** e guardá-lo no
+cofre local, sem passar pela linha de comando:
+
+```powershell
+cd $env:APPDATA\acritech\tools
+.\Set-AcritechCredential.ps1 -Path coolify.token
+```
+
+O valor é pedido em entrada oculta (não aparece na tela, no histórico nem no
+log de processos de saída). Com isso a criação e o deploy podem ser feitos por
+API, sem intervenção manual. O token atual das configurações do VS Code é
+somente leitura e participa do Settings Sync, então **não** é o lugar adequado
+para um token de escrita.
+
+Enquanto isso, a criação manual pelo painel continua valendo — os valores
+exatos estão na seção "Criar a aplicação no Coolify".
 
 ## Criar a aplicação no Coolify (painel)
+
+Padrão seguido pelas landing pages já publicadas nesta instância: projeto
+**My first project**, ambiente **production**, servidor **localhost**, destino
+**coolify**, porta 80, build por Dockerfile. A app da Bujosa segue o mesmo
+padrão, com healthcheck em `/healthz`.
 
 1. **New Resource → Application → Public Repository**.
 2. **Repository**: `https://github.com/gilsonjoaoBR/bujosa-clima`.
