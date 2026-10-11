@@ -34,18 +34,27 @@ Levantamento das conexões existentes nesta estação:
 | Extensão `ron-niri.coolify-vscode` (VS Code) | `coolify.apiUrl` + `coolify.apiToken` nas configurações | Leitura (projetos, servidores, aplicações e logs); **escrita recusada** |
 | Cofre DPAPI `%APPDATA%\acritech\credentials\store.json` | credenciais `coolify.url` e `coolify.token` | Usadas pelo módulo local; a allowlist de laboratório é dele |
 | `mcp hostinger-vps` / `hostinger-dns` | API Hostinger | Inventário da VPS e escrita no DNS |
+| SSH para a VPS | chave `acritech-hml` (carregada no agente) autorizada no `srv1001797` | Acesso root ao host; não foi usado |
 
-Com o token atual é possível ler tudo o que é necessário para montar a
-aplicação (projeto, ambiente, servidor, destino, portas e padrão das landing
-pages existentes), mas não criar nem alterar recursos.
+O token do cofre e o das configurações do VS Code são **o mesmo token**
+(`fingerprint 4c307b551bfb`), com permissão apenas de leitura: a API responde
+`403 Missing required permissions: write` para qualquer escrita. Com ele é
+possível ler tudo o que é necessário para montar a aplicação (projeto,
+ambiente, servidor, destino, portas e o padrão das landing pages existentes),
+mas não criar nem alterar recursos.
+
+A limitação é do **token**, não da conta (o token pertence ao Root Team da
+instância), do MCP nem da sessão: a API recusa antes de qualquer validação, e
+autorizar escopo não muda isso.
 
 **Ajuste mínimo para automatizar:** gerar no painel do Coolify (Keys & Tokens →
 API tokens) um token com as permissões **read, write e deploy** e guardá-lo no
-cofre local, sem passar pela linha de comando:
+cofre local em uma chave nova, para não ampliar o escopo do token que o
+laboratório usa hoje:
 
 ```powershell
 cd $env:APPDATA\acritech\tools
-.\Set-AcritechCredential.ps1 -Path coolify.token
+.\Set-AcritechCredential.ps1 -Path coolify.token.bujosa
 ```
 
 O valor é pedido em entrada oculta (não aparece na tela, no histórico nem no
