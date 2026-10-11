@@ -13,16 +13,20 @@ Runbook da publicação na VPS da Acritech (Hostinger `srv1001797`, IP
 | Registro DNS | `bujosaclima.acritech.com.br` A → `195.35.43.214` (TTL 14400) |
 | Build | `Dockerfile` (Node 22 → Nginx), porta interna 80 |
 | Healthcheck | `GET /healthz` → `200 ok` |
-| Aplicação no Coolify | **a criar** (ver abaixo) |
+| Aplicação no Coolify | `bujosa-clima` — UUID `eh5tolpdkciwqwbmyqakfro3` |
+| Projeto / ambiente | My first project → production (servidor `localhost`, destino `coolify`) |
+| Credencial de publicação | token dedicado `bujosa-clima` no cofre local, chave `coolify.bujosa_deploy` |
 | Variáveis de build | `VITE_WHATSAPP_NUMBER=5521984173233`, `VITE_SITE_URL=https://bujosaclima.acritech.com.br` |
 
 ## Estado atual
 
+**Publicado e validado em 11/10/2026.**
+
 - Código auditado e publicado no GitHub (sem segredos no histórico).
 - Registro DNS criado e resolvendo.
-- **Falta criar a aplicação no Coolify.** A criação não pôde ser feita por API:
-  o token configurado responde `403 Missing required permissions: write`.
-  Detalhes e o ajuste mínimo estão em "Acesso ao Coolify", abaixo.
+- Aplicação criada no Coolify e deploy concluído (`running:healthy`).
+- HTTPS com certificado válido, HTTP redirecionando para HTTPS (302).
+- Landing page respondendo em <https://bujosaclima.acritech.com.br>.
 
 ## Acesso ao Coolify
 
@@ -147,7 +151,33 @@ e não afeta nenhuma outra aplicação da VPS.
 
 | Data | Commit | Resultado |
 | --- | --- | --- |
-| 2026-10-11 | `c87b8da` (público no `main`) | Código publicado no GitHub e registro DNS criado e resolvendo. Aplicação no Coolify ainda **não criada**: o acesso do agente é somente leitura e restrito ao laboratório, então esta etapa depende do painel. |
+| 2026-10-11 | `0021d66` | **Publicação concluída.** Repositório público, DNS resolvendo, aplicação `bujosa-clima` [eh5tolpdkciwqwbmyqakfro3] criada em My first project → production, deploy `5ie1wgolm7zjpmn6okanqtgh` finalizado (`running:healthy`) e validação em produção aprovada. |
 
-Depois de criar a aplicação e fazer o deploy, registre aqui o commit implantado,
-o identificador (UUID) da aplicação e o resultado da validação.
+### Validação em produção (11/10/2026)
+
+| Verificação | Resultado |
+| --- | --- |
+| `GET /` | `200` · HTML da landing page |
+| `GET /privacidade` | `200` · página da política |
+| `GET /healthz` | `200` · `ok` |
+| `GET /sitemap.xml` · `/robots.txt` · `/favicon.ico` | `200` cada |
+| HTTPS / certificado | handshake válido, sem erro de verificação |
+| HTTP → HTTPS | `302` para `https://bujosaclima.acritech.com.br/` |
+| Canonical · Open Graph · JSON-LD | todos em `https://bujosaclima.acritech.com.br` |
+| Sitemap · robots | apontando para o domínio publicado |
+| Bundle | contém o número `5521984173233` e **nenhuma** referência ao domínio antigo |
+| CTAs de WhatsApp | 9 links, todos `wa.me/5521984173233`, com a marca na mensagem |
+| Carrossel · FAQ · formulário | carrossel em movimento, 18 perguntas, 7 campos no formulário |
+| Rodapé | crédito da Acritech e logotipo da Bujosa presentes |
+| Responsividade | sem rolagem horizontal em 390, 768 e 1440 px |
+| Console do navegador | sem erros |
+| Aplicações existentes | `acritech.com.br`, `www`, `agenda-hml`, `booking-ux-hml.agenda-hml`, `enfbeatrizbatista.com.br` e `manubujosa.com.br` seguem `200` |
+
+Capturas: `docs/validacao/producao-desktop-1440.png` e
+`docs/validacao/producao-mobile-390.png`.
+
+### Atualizações futuras
+
+O app usa a branch `main` do repositório. Depois de `git push`, basta disparar
+**Deploy** na aplicação (ou configurar o webhook do repositório no Coolify para
+deploy automático). Os argumentos de build já estão salvos na aplicação.
