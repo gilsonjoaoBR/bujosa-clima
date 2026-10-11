@@ -7,7 +7,7 @@ import { defineConfig } from 'vitest/config';
 
 import { seoAssetsPlugin } from './scripts/vite-plugin-seo.ts';
 
-const DEFAULT_SITE_URL = 'https://bujosaclima.com.br';
+const DEFAULT_SITE_URL = 'https://bujosaclima.acritech.com.br';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_');

@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = 'https://bujosaclima.com.br';
+const DEFAULT_SITE_URL = 'https://bujosaclima.acritech.com.br';
 
 function readSiteUrl(): string {
   const configured = import.meta.env.VITE_SITE_URL?.trim();

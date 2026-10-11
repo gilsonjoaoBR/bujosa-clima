@@ -150,25 +150,25 @@ geração de imagens disponível nesta sessão. Para trocar por fotos reais, sig
    exige um novo build, não apenas um restart.
 3. **Porta**: exponha a porta `80` do container.
 4. **Healthcheck**: use `GET /healthz` (responde `200 ok`).
-5. **Domínio e HTTPS**: aponte `bujosaclima.com.br` (e `www`, se for o caso)
-   para o serviço no Coolify e deixe o proxy gerenciado emitir o certificado
-   Let's Encrypt. O container serve HTTP na 80 e não lida com TLS.
-6. **Deploy**: esta versão **não** publica em produção — a publicação depende
-   da sua autorização.
+5. **Domínio e HTTPS**: aponte `bujosaclima.acritech.com.br` para o serviço no
+   Coolify e deixe o proxy gerenciado emitir o certificado Let's Encrypt. O
+   container serve HTTP na 80 e não lida com TLS.
+6. **Deploy**: acompanhe os logs do build e confirme `/healthz` e a home depois
+   de cada publicação. Procedimento completo, com rollback, em
+   `docs/publicacao.md`.
 
-## Primeiro envio para o GitHub
+## Repositório e publicação
 
-O projeto ainda não tem repositório remoto. Depois de criar o repositório vazio
-(sugestão de nome: `bujosa-clima-landing`), rode:
+| Item | Valor |
+| --- | --- |
+| Repositório | `https://github.com/gilsonjoaoBR/bujosa-clima` (público) |
+| URL pública | `https://bujosaclima.acritech.com.br` |
+| Aplicação no Coolify | registrada em `docs/publicacao.md` |
+| Imagem | build pelo `Dockerfile` (Node 22 → Nginx), porta 80, healthcheck `/healthz` |
 
-```bash
-git remote add origin git@github.com:<sua-conta>/bujosa-clima-landing.git
-git push -u origin main
-```
-
-Antes de publicar, confirme que o repositório é privado ou que não há nada
-sensível no histórico: a identidade visual aprovada está versionada em
-`docs/identidade/`.
+O repositório é público e não contém segredos: o `.env` é ignorado pelo Git e
+as únicas informações "de contato" versionadas (número de WhatsApp e URL
+canônica) são justamente as que o site publica.
 
 ## Verificações executadas nesta versão
 
@@ -205,7 +205,10 @@ Capturas em `docs/validacao/`.
    Google, que não as considera elegíveis para resultado enriquecido. Basta
    mudar `publishReviewStructuredData` em `src/content/testimonials.ts`.
 5. Fotos próprias dos serviços (ver `public/images/LEIA-ME.md`).
-6. Confirmação do domínio final para `VITE_SITE_URL`.
+6. Registro (ou não) do domínio próprio `bujosaclima.com.br`. A publicação usa
+   o subdomínio `bujosaclima.acritech.com.br` porque o domínio próprio ainda
+   não está registrado; se ele for registrado depois, basta ajustar
+   `VITE_SITE_URL`, reconstruir e apontar o DNS.
 
 O site não publica CNPJ, endereço comercial, e-mail, horário de funcionamento,
 preços, prazos, certificações, depoimentos ou números de clientes — nada disso

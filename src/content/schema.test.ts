@@ -6,14 +6,14 @@ import { testimonialSummary, testimonials } from './testimonials';
 describe('buildLocalBusinessSchema', () => {
   it('descreve a atividade com as cidades atendidas', () => {
     const schema = buildLocalBusinessSchema({
-      siteUrl: 'https://bujosaclima.com.br/',
+      siteUrl: 'https://bujosaclima.acritech.com.br/',
     }) as {
       url: string;
       areaServed: { name: string }[];
       hasOfferCatalog: { itemListElement: unknown[] };
     };
 
-    expect(schema.url).toBe('https://bujosaclima.com.br/');
+    expect(schema.url).toBe('https://bujosaclima.acritech.com.br/');
     expect(schema.areaServed.map((city) => city.name)).toEqual([
       'Maricá',
       'São Gonçalo',
@@ -23,7 +23,9 @@ describe('buildLocalBusinessSchema', () => {
   });
 
   it('não publica telefone quando o número não está configurado', () => {
-    const schema = buildLocalBusinessSchema({ siteUrl: 'https://bujosaclima.com.br' });
+    const schema = buildLocalBusinessSchema({
+      siteUrl: 'https://bujosaclima.acritech.com.br',
+    });
 
     expect(schema).not.toHaveProperty('telephone');
     expect(schema).not.toHaveProperty('contactPoint');
@@ -31,7 +33,7 @@ describe('buildLocalBusinessSchema', () => {
 
   it('não inventa dados não confirmados', () => {
     const schema = buildLocalBusinessSchema({
-      siteUrl: 'https://bujosaclima.com.br',
+      siteUrl: 'https://bujosaclima.acritech.com.br',
       telephone: '5521999999999',
     });
 
@@ -43,7 +45,9 @@ describe('buildLocalBusinessSchema', () => {
   });
 
   it('publica a nota agregada a partir dos depoimentos cadastrados', () => {
-    const schema = buildLocalBusinessSchema({ siteUrl: 'https://bujosaclima.com.br' }) as {
+    const schema = buildLocalBusinessSchema({
+      siteUrl: 'https://bujosaclima.acritech.com.br',
+    }) as {
       aggregateRating?: { ratingValue: number; reviewCount: number; bestRating: number };
       review?: { author: { name: string }; reviewRating: { ratingValue: number } }[];
     };
